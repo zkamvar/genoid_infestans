@@ -41,11 +41,11 @@ shinyServer(function(input, output) {
     if (input$tree=="nj"){
     gen <- missingno(gen,type="zero"
       )
-     a <<- poppr:::genoid.bruvo.boot(gen, sample=input$boot, tree=input$tree, cutoff=50)
+     a <<- poppr:::genoid.bruvo.boot(gen, sample=input$boot, tree=input$tree, cutoff=50, replen=c(3,3,2,3,3,2,2,3,3,3,3,3))
      a <<- midpoint(ladderize(a))
     }
     else {
-      a <<- bruvo.boot(gen, sample=input$boot, tree=input$tree, cutoff=50)
+      a <<- bruvo.boot(gen, sample=input$boot, tree=input$tree, cutoff=50, replen=c(3,3,2,3,3,2,2,3,3,3,3,3))
     }
     #Drawing the tree
     plot(a)
@@ -70,7 +70,7 @@ shinyServer(function(input, output) {
     df.m <- rbind(df.m,newrow,deparse.level=0)
     df.m <- as.data.frame(df.m)
     gen <- df2genind(df.m[, -c(1,2)], ploid=2, sep="/", pop=df.m[, 2], ind.names=df.m[, 1])
-    msn.plot <<- bruvo.msn(gen, palette=colorRampPalette(c("blue","darkcyan","darkolivegreen","blue","yellow3","violet", "skyblue", "green", "blue", "orange", "orangered","magenta","cyan","darkorchid","darkred","aquamarine3","gold","tan","maroon", "red"))
+    msn.plot <<- bruvo.msn(gen, palette=colorRampPalette(c("blue","darkcyan","darkolivegreen","blue","yellow3","violet", "skyblue", "green", "blue", "orange", "orangered","magenta","cyan","darkorchid","darkred","aquamarine3","gold","tan","maroon", "red")),replen=c(3,3,2,3,3,2,2,3,3,3,3,3))
 )
     V(msn.plot$graph)$size <<- 10
      #x <<- sample(10000, 1)
