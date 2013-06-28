@@ -6,6 +6,7 @@ newrow <- c()
 msn.plot <- NULL
 a <- NULL
 gen <- NULL
+p <- NULL
 random.sample <- 1
 
 shinyServer(function(input, output) {
