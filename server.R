@@ -25,7 +25,7 @@ shinyServer(function(input, output) {
     }
     a <- c(input$table)
     b<-unlist(strsplit(a,c("\n")))
-    b<-sub(" ","\t",b)
+    b<-gsub("\\s+","\t",b)
     b<-strsplit(b,c("\t"))
     t<-t(as.data.frame(b))
     rownames(t)<-NULL
