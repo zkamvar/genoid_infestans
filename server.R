@@ -18,11 +18,18 @@ shinyServer(function(input, output) {
   })
 
   output$distPlotTree <- renderPlot({
-    newrow <<- c("query","???",input$mst1,input$mst2,input$mst3,input$mst4,input$mst5,input$mst6,input$mst7,input$mst8,input$mst9,input$mst10, input$mst11, input$mst12)
+    #newrow <<- c("query","???",input$mst1,input$mst2,input$mst3,input$mst4,input$mst5,input$mst6,input$mst7,input$mst8,input$mst9,input$mst10, input$mst11, input$mst12)
     if (any(is.na(newrow))){
       plot(c(0,1),c(0,1),ann=F,bty='n',type='n',xaxt='n',yaxt='n') + rect(0,1,1,0.8,col="indianred2",border='transparent' ) + text(x=0.5, y=0.9, "No SSR data has been input.",cex=1.6, col="white")
     }
-    df.m <- rbind(df.m,newrow,deparse.level=0)
+    a <- c(input$table)
+    b<-unlist(strsplit(a,c("\n")))
+    b<-sub(" ","\t",b)
+    b<-strsplit(b,c("\t"))
+    t<-t(as.data.frame(b))
+    rownames(t)<-NULL
+    colnames(t)<-colnames(df.m)
+    df.m <- rbind(df.m,t,deparse.level=0)
     df.m <- as.data.frame(df.m)
     gen <<- df2genind(df.m[, -c(1,2)], ploid=3, sep="/", pop=df.m[, 2], ind.names=df.m[, 1])
     if (input$boot > 1000){
@@ -41,19 +48,20 @@ shinyServer(function(input, output) {
     if (input$tree=="nj"){
     gen <- missingno(gen,type="zero"
       )
-     a <<- poppr:::genoid.bruvo.boot(gen, sample=input$boot, tree=input$tree, cutoff=50, replen=c(3,3,2,3,3,2,2,3,3,3,3,3))
-     a <<- midpoint(ladderize(a))
+     p <<- poppr:::genoid.bruvo.boot(gen, sample=input$boot, tree=input$tree, cutoff=50, replen=c(3,3,2,3,3,2,2,3,3,3,3,3))
+     p <<- midpoint(ladderize(a))
     }
     else {
-      a <<- bruvo.boot(gen, sample=input$boot, tree=input$tree, cutoff=50, replen=c(3,3,2,3,3,2,2,3,3,3,3,3))
+      p <<- bruvo.boot(gen, sample=input$boot, tree=input$tree, cutoff=50, replen=c(3,3,2,3,3,2,2,3,3,3,3,3))
     }
     #Drawing the tree
-    plot(a)
+    plot(p)
+    print(pop(gen))
     #Adding the tip lables from each population, and with the already defined colors
-    tiplabels(pop(gen), adj=c(-4, 0.5), frame="n", col=gen$other$tipcolor, cex=0.8, font=2)
+    tiplabels(as.character(pop(gen)), adj=c(-4, 0.5), frame="n", col=gen$other$tipcolor, cex=0.8, font=2)
     
     #Adding the nodel labels: Bootstrap values.
-    nodelabels(a$node.label, adj = c(1.2,-0.5), frame="n", cex=0.9, font=3)
+    nodelabels(p$node.label, adj = c(1.2,-0.5), frame="n", cex=0.9, font=3)
     
     if (input$tree=="upgma"){
       axisPhylo(3)
@@ -66,12 +74,21 @@ shinyServer(function(input, output) {
   
 #Minimum Spanning Network
   output$MinSpanTree <- renderPlot({
-    newrow <<- c("query","query",input$mst1,input$mst2,input$mst3,input$mst4,input$mst5,input$mst6,input$mst7,input$mst8,input$mst9,input$mst10, input$mst11, input$mst12)
-    df.m <- rbind(df.m,newrow,deparse.level=0)
+    #newrow <<- c("query","???",input$mst1,input$mst2,input$mst3,input$mst4,input$mst5,input$mst6,input$mst7,input$mst8,input$mst9,input$mst10, input$mst11, input$mst12)
+    if (any(is.na(newrow))){
+      plot(c(0,1),c(0,1),ann=F,bty='n',type='n',xaxt='n',yaxt='n') + rect(0,1,1,0.8,col="indianred2",border='transparent' ) + text(x=0.5, y=0.9, "No SSR data has been input.",cex=1.6, col="white")
+    }
+    a <- c(input$table)
+    b<-unlist(strsplit(a,c("\n")))
+    b<-sub(" ","\t",b)
+    b<-strsplit(b,c("\t"))
+    t<-t(as.data.frame(b))
+    rownames(t)<-NULL
+    colnames(t)<-colnames(df.m)
+    df.m <- rbind(df.m,t,deparse.level=0)
     df.m <- as.data.frame(df.m)
-    gen <- df2genind(df.m[, -c(1,2)], ploid=2, sep="/", pop=df.m[, 2], ind.names=df.m[, 1])
+    gen <<- df2genind(df.m[, -c(1,2)], ploid=3, sep="/", pop=df.m[, 2], ind.names=df.m[, 1])
     msn.plot <<- bruvo.msn(gen, palette=colorRampPalette(c("blue","darkcyan","darkolivegreen","blue","yellow3","violet", "skyblue", "green", "blue", "orange", "orangered","magenta","cyan","darkorchid","darkred","aquamarine3","gold","tan","maroon", "red")),replen=c(3,3,2,3,3,2,2,3,3,3,3,3))
-)
     V(msn.plot$graph)$size <<- 10
      #x <<- sample(10000, 1)
     x <<- 200
@@ -84,16 +101,16 @@ shinyServer(function(input, output) {
   output$downloadData <- downloadHandler(
     filename = function() { paste(input$tree, '.tre', sep='') },
     content = function(file) {
-      write.tree(a, file)
+      write.tree(p, file)
     })
   
   output$downloadPdf <- downloadHandler(
     filename = function() { paste(input$tree, '.pdf', sep='') },
     content = function(file) {
       pdf(file)
-      plot(a, cex=0.5)
+      plot(p, cex=0.5)
       tiplabels(pop(gen), adj=c(-4, 0.5), frame="n", col=gen$other$tipcolor, cex=0.4, font=2)
-      nodelabels(a$node.label, adj = c(1.2,-0.5), frame="n", cex=0.4, font=3)
+      nodelabels(p$node.label, adj = c(1.2,-0.5), frame="n", cex=0.4, font=3)
       if (input$tree=="upgma"){
         axisPhylo(3)
         }
