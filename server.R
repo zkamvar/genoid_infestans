@@ -48,14 +48,13 @@ shinyServer(function(input, output) {
       #Running the tree, setting a cutoff of 50 and saving it into a variable to be plotted (a)
     if (input$tree=="nj"){
      p <<- poppr:::genoid.bruvo.boot(gen, sample=input$boot, tree=input$tree, cutoff=50, replen=c(3,3,2,3,3,2,2,3,3,3,3,3))
-     p <<- midpoint(ladderize(a))
+     #p <<- midpoint(ladderize(a))
     }
     else {
       p <<- bruvo.boot(gen, sample=input$boot, tree=input$tree, cutoff=50, replen=c(3,3,2,3,3,2,2,3,3,3,3,3))
     }
     #Drawing the tree
     plot(p)
-    print(pop(gen))
     #Adding the tip lables from each population, and with the already defined colors
     tiplabels(as.character(pop(gen)), adj=c(-4, 0.5), frame="n", col=gen$other$tipcolor, cex=0.8, font=2)
     
