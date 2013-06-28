@@ -60,43 +60,21 @@
 		<p>Both of the methods use Bruvo's Distance, as implemented in the R package poppr</p>		
 		<hr>
 		</div>
-		<div class="span2">		
+		<div class="span11">		
 		<h4>SSR loci</h4>
 		<p>Separate alleles using a slash (Allele1/Allele2/Allele3)</p>
 		<p style="color:blue"><b>Warning:</b> All genotipes must have 3 alleles, if you have diploid data, add an extra "/000" at the end.</p>
 		<div class="control">		    
 		    <form class="well">
-		    <label style="align:center">D13</label>
-		    <input id="mst1" name="mst1" type="text" class="shiny-bound-input" maxlength="11" style="width:80px" placeholder="000/000/000">
-			 <label>G11</label>		    
-		    <input id="mst2" name="mst2" type="text" class="shiny-bound-input" maxlength="11" style="width:80px;" placeholder="000/000/000">
-			 <label>Pi04</label>	
-		    <input id="mst3" name="mst3" type="text" class="shiny-bound-input" maxlength="11" style="width:80px;" placeholder="000/000/000">
-			 <label>Pi4B</label>	
-			 <input id="mst4" name="mst4" type="text" class="shiny-bound-input" maxlength="11" style="width:80px;" placeholder="000/000/000">
-			 <label>Pi63</label>	
-		    <input id="mst5" name="mst5" type="text" class="shiny-bound-input" maxlength="11" style="width:80px;" placeholder="000/000/000">
-			 <label>Pi70</label>			    
-		    <input id="mst6" name="mst6" type="text" class="shiny-bound-input" maxlength="11" style="width:80px;" placeholder="000/000/000">
-			 <label>SSR11</label>			    
-		    <input id="mst7" name="mst7" type="text" class="shiny-bound-input" maxlength="11" style="width:80px;" placeholder="000/000/000">
-			 <label>SSR2</label>			    
-		    <input id="mst8" name="mst8" type="text" class="shiny-bound-input" maxlength="11" style="width:80px;" placeholder="000/000/000">
-			 <label>SSR3</label>			    
-		    <input id="mst9" name="mst9" type="text" class="shiny-bound-input" maxlength="11" style="width:80px;" placeholder="000/000/000">
-		    <label>SSR4</label>			    
-		    <input id="mst10" name="mst10" type="text" class="shiny-bound-input" maxlength="11" style="width:80px;" placeholder="000/000/000">
-			 <label>SSR5</label>			    
-		    <input id="mst11" name="mst11" type="text" class="shiny-bound-input" maxlength="11" style="width:80px;" placeholder="000/000/000">
-		    <label>SSR6</label>			    
-		    <input id="mst12" name="mst12" type="text" class="shiny-bound-input" maxlength="11" style="width:80px;" placeholder="000/000/000">
+		    <label style="align:center">Input Window</label>
+		    <textarea id="table" name="table" class="shiny-bound-input" cols="25" rows="7" style="width: 100%"></textarea> 
 		    <br>
 		    <button type="submit" class="btn btn-success">Submit genotype</button>
     		</form>
     	</div>
     	</div>
     	<div id="plot" class="shiny-plot-output shiny-bound-output" style="width: 100% ; height: 900px">
-		<div class="span9 offset1">
+		<div class="span10 offset1">
 		<h4>Analysis</h4>
 		<p>Select between a Distance tree with bootstrap support values or a Minimum spanning network</p>
 		<div class="tabbable">
@@ -151,7 +129,7 @@
     				</div>
     				</div>
     			</div>				
-				<div id="distPlotTree" class="span6 shiny-plot-output" style="width: 100% ; height: 800px"></div>
+				<div id="distPlotTree" class="span8 shiny-plot-output" style="width: 100% ; height: 800px"></div>
 			</div>
 			<div class="tab-pane" title="Minimum spanning network" id="tab-8923-2">		
 				<div class="span12">
